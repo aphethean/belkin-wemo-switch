@@ -1,7 +1,11 @@
 package com.palominolabs.wemo;
 
+import org.cybergarage.upnp.Action;
+import org.cybergarage.upnp.ActionList;
 import org.cybergarage.upnp.ControlPoint;
 import org.cybergarage.upnp.Device;
+import org.cybergarage.upnp.Service;
+import org.cybergarage.upnp.ServiceList;
 import org.cybergarage.upnp.device.DeviceChangeListener;
 
 import java.util.Arrays;
@@ -13,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class InsightSwitchFinder implements AutoCloseable {
 
     private static final String BELKIN_INSIGHT_DEVICE_TYPE = "urn:Belkin:device:insight:1";
+    private static final String BELKIN_CONTROLLEE_DEVICE_TYPE = "urn:Belkin:device:controllee:1";
 
     private final ControlPoint controlPoint;
 
@@ -42,8 +47,10 @@ public class InsightSwitchFinder implements AutoCloseable {
         controlPoint.addDeviceChangeListener(new DeviceChangeListener() {
             @Override
             public void deviceAdded(Device device) {
-                if (!device.getDeviceType().equals(BELKIN_INSIGHT_DEVICE_TYPE)) {
-                    return;
+                if (!device.getDeviceType().equals(BELKIN_INSIGHT_DEVICE_TYPE) 
+                		&& !device.getDeviceType().equals(BELKIN_CONTROLLEE_DEVICE_TYPE)) {
+                    System.out.println("Detected device, but rejected: [" + device.getDeviceType() + "]");
+                	return;
                 }
 
                 InsightSwitch insightSwitch = new InsightSwitch(device);
@@ -76,6 +83,23 @@ public class InsightSwitchFinder implements AutoCloseable {
             throw new InsightSwitchNotFoundException("Device named <" + friendlyName + "> not found. Make sure you passed the name to the constructor and called findSwitches()");
         }
 
+//        device.getDeviceList();
+        
+        ServiceList sl = device.getServiceList();
+        System.out.println("Device " + device.getLocation());
+        for (int i = 0; i<sl.size(); i++) {
+        	Service service = (Service) sl.get(i);
+//        	Service loadedSvc = device.getServiceBySCPDURL(service.getSCPDURL());
+//        	service = loadedSvc;
+        	System.out.println("Service: " + service.getServiceID());
+        	System.out.println("ServiceURL: " + service.getSCPDURL());
+        	ActionList al = service.getActionList();
+        	for (int a = 0; a < al.size(); a++) {
+        		Action action = (Action)al.get(a);
+        		System.out.println("Action: " + action.getName());
+        	}
+        }
+        
         return new InsightSwitch(device);
     }
 
