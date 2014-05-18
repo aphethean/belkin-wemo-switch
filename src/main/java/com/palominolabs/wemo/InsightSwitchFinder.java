@@ -1,11 +1,7 @@
 package com.palominolabs.wemo;
 
-import org.cybergarage.upnp.Action;
-import org.cybergarage.upnp.ActionList;
 import org.cybergarage.upnp.ControlPoint;
 import org.cybergarage.upnp.Device;
-import org.cybergarage.upnp.Service;
-import org.cybergarage.upnp.ServiceList;
 import org.cybergarage.upnp.device.DeviceChangeListener;
 
 import java.util.Arrays;
