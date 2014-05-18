@@ -5,7 +5,7 @@ import org.cybergarage.upnp.Argument;
 import org.cybergarage.upnp.ArgumentList;
 import org.cybergarage.upnp.Device;
 import org.cybergarage.upnp.Service;
-import org.cybergarage.util.Debug;
+
 
 public class InsightSwitch {
     private final Device device;
@@ -30,16 +30,18 @@ public class InsightSwitch {
     }
 
     public void setSwitchIsOn(boolean on) throws InsightSwitchOperationException {
-    	Debug.on();
+//    	Debug.on();
     	Service service = device.getService("urn:Belkin:serviceId:basicevent1");
     	Action action = new Action(service.getServiceNode());
     	ArgumentList al = new ArgumentList();
-    	al.add(new Argument("BinaryState", (on ? 1 : 0) + ""));
+    	Argument binState = new Argument("BinaryState", "");
+    	binState.setDirection(Argument.IN);
+    	al.add(binState);
     	action.setArgumentList(al);
     	action.setName("SetBinaryState");
     	
 //        Action action = device.getAction("SetBinaryState");
-//        action.setArgumentValue("BinaryState", on ? 1 : 0);
+        action.setArgumentValue("BinaryState", on ? 1 : 0);
 
         performAction(action);
     }

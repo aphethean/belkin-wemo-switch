@@ -83,22 +83,20 @@ public class InsightSwitchFinder implements AutoCloseable {
             throw new InsightSwitchNotFoundException("Device named <" + friendlyName + "> not found. Make sure you passed the name to the constructor and called findSwitches()");
         }
 
-//        device.getDeviceList();
-        
-        ServiceList sl = device.getServiceList();
-        System.out.println("Device " + device.getLocation());
-        for (int i = 0; i<sl.size(); i++) {
-        	Service service = (Service) sl.get(i);
-//        	Service loadedSvc = device.getServiceBySCPDURL(service.getSCPDURL());
-//        	service = loadedSvc;
-        	System.out.println("Service: " + service.getServiceID());
-        	System.out.println("ServiceURL: " + service.getSCPDURL());
-        	ActionList al = service.getActionList();
-        	for (int a = 0; a < al.size(); a++) {
-        		Action action = (Action)al.get(a);
-        		System.out.println("Action: " + action.getName());
-        	}
-        }
+//        ServiceList sl = device.getServiceList();
+//        System.out.println("Device " + device.getLocation());
+//        for (int i = 0; i<sl.size(); i++) {
+//        	Service service = (Service) sl.get(i);
+////        	Service loadedSvc = device.getServiceBySCPDURL(service.getSCPDURL());
+////        	service = loadedSvc;
+//        	System.out.println("Service: " + service.getServiceID());
+//        	System.out.println("ServiceURL: " + service.getSCPDURL());
+//        	ActionList al = service.getActionList();
+//        	for (int a = 0; a < al.size(); a++) {
+//        		Action action = (Action)al.get(a);
+//        		System.out.println("Action: " + action.getName());
+//        	}
+//        }
         
         return new InsightSwitch(device);
     }
